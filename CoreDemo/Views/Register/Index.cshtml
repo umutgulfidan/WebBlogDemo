@@ -1,0 +1,85 @@
+﻿@model EntityLayer.Concrete.Writer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+<section class="main-content-w3layouts-agileits">
+	<div class="container">
+		<h3 class="tittle">Yazar Kayıt Sayfası</h3>
+		<div class="inner-sec">
+			<div class="login p-5 bg-light mx-auto mw-100">
+				@using(Html.BeginForm("Index","Register",FormMethod.Post)){
+
+					<div class="form-row">
+						<div class="col-md-6 mb-3">
+							<label for="validationCustom01">Adınız Soyadınız</label>
+							@Html.TextBoxFor(x => x.WriterName, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x=>x.WriterName,"", new { @class="text-danger"})
+							@* <input type="text" name="WriterName" class="form-control" id="validationDefault01" placeholder="" required=""> *@
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="validationCustom02">Mail Adresi</label>
+							@Html.TextBoxFor(x => x.WriterMail, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.WriterMail, "", new { @class = "text-danger" })
+							@* <input type="email" name="WriterMail" class="form-control" id="validationDefault02" placeholder="" required=""> *@
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="exampleInputPassword1 mb-2">Şifre</label>
+							@Html.TextBoxFor(x => x.WriterPassword, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.WriterPassword, "", new { @class = "text-danger" })
+							@* <input type="password" name="WriterPassword" class="form-control" id="password1" placeholder="" required=""> *@
+						</div>
+						<div class="form-group col-md-6">
+							<label for="exampleInputPassword2 mb-2">Görsel Dosya Yolu</label>
+							@Html.TextBoxFor(x => x.WriterImage, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.WriterImage, "", new { @class = "text-danger" })
+							@* <input type="text" name="WriterImage" class="form-control" id="password2" placeholder="" required=""> *@
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary submit mb-4">Kayıt Ol</button>
+					<p>
+						<a href="#" id="btn1">Tüm şartları okudum kabul ediyorum.</a>
+					</p>
+				}
+
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	document.getElementById("btn1").onclick = function() {
+		Swal.fire({
+			title: "Kullanım Şartları",
+			html: `
+				<div style="margin:15px;font-size:smaller">
+						<p>Bu web sitesine üye olarak, aşağıdaki kullanım şartlarını kabul etmiş sayılırsınız. Lütfen şartları dikkatlice okuyun.</p><br/>
+
+					<ul>
+						<li><strong>1. Üyelik ve Hesap Güvenliği:</strong> Siteye üye olmak için doğru ve güncel bilgi sağlamanız gerekmektedir. Üyeliğinizle ilgili herhangi bir değişiklik durumunda bu bilgileri güncellemekle yükümlüsünüz. Hesabınızın güvenliği için şifrenizi kimseyle paylaşmamanız önemlidir. Hesabınızda gerçekleşebilecek her türlü etkinlikten siz sorumlusunuz.</li><br/>
+						<li><strong>2. Yasaklı İçerikler:</strong> Sitemizde, ırkçılık, cinsiyetçilik, şiddet, nefret söylemi içeren veya yasadışı içerikler yayınlamak yasaktır. Herhangi bir yasadışı veya zararlı içerik paylaşmanız durumunda üyeliğiniz askıya alınabilir ve yasal işlemler başlatılabilir.</li><br/>
+						<li><strong>3. Fikri Mülkiyet Hakları:</strong> Sitede yer alan içerikler, yazılar, görseller ve diğer materyaller telif hakkıyla korunmaktadır. Bu içerikleri izinsiz kullanmak yasaktır. Kendi içeriklerinizi siteye yüklerken, bu içeriklerin size ait olduğundan veya kullanma hakkınız olduğundan emin olmalısınız.</li><br/>
+						<li><strong>4. Kullanıcı Davranışları:</strong> Diğer kullanıcılarla saygılı bir şekilde iletişim kurmanız beklenir. Hakaret, tehdit veya olumsuz davranışlar siteye girişinizi engelleyebilir. Siteyi sadece yasal ve etik amaçlar için kullanmanız gerekmektedir.</li><br/>
+						<li><strong>5. Veri Koruma ve Gizlilik:</strong> Kişisel verileriniz, Gizlilik Politikamız’a uygun olarak toplanır ve saklanır. Üyelik esnasında verdiğiniz bilgiler yalnızca belirtilen amaçlarla kullanılacaktır. Gizliliğinizin ihlal edilmemesi için gereken tüm tedbirler alınmakla birlikte, üçüncü taraflarca yapılabilecek veri ihlallerinden site sorumlu değildir.</li><br/>
+						<li><strong>6. Değişiklikler:</strong> Bu kullanım şartları zaman zaman güncellenebilir. Güncellenmiş şartlar, site üzerinde yayımlandığı tarihten itibaren geçerli olacaktır. Kullanıcılar, siteyi kullanmaya devam ederek güncel şartları kabul etmiş sayılır.</li><br/>
+						<li><strong>7. Hizmetin Durdurulması:</strong> Site yönetimi, herhangi bir zamanda üyelik iptali veya hizmetlerin geçici veya kalıcı olarak durdurulmasına karar verebilir.</li>
+					</ul>
+				</div>`
+,
+			icon: "question",
+			confirmButtonText: `
+			<i class="fa fa-thumbs-up"></i> Anladım!
+			`
+		});
+	};
+</script>
+

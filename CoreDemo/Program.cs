@@ -1,7 +1,18 @@
+using System.Globalization;
+using BusinessLayer.ValidationRules;
+using EntityLayer.Concrete;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Localization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IValidator<Writer>, WriterValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<WriterValidator>();
+
+
 
 var app = builder.Build();
 
