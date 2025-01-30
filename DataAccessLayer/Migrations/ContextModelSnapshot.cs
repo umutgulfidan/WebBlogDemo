@@ -35,19 +35,15 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AboutDetails2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AboutImage1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AboutImage2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AboutMapLocation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("AboutStatus")
@@ -55,7 +51,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("AboutID");
 
-                    b.ToTable("Abouts", (string)null);
+                    b.ToTable("Abouts");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Blog", b =>
@@ -91,11 +87,16 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
+                    b.Property<int>("WriterID")
+                        .HasColumnType("int");
+
                     b.HasKey("BlogID");
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Blogs", (string)null);
+                    b.HasIndex("WriterID");
+
+                    b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Category", b =>
@@ -119,7 +120,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Comment", b =>
@@ -155,7 +156,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("BlogID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Contact", b =>
@@ -190,7 +191,30 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("ContactID");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.NewsLetter", b =>
+                {
+                    b.Property<int>("MailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MailID"));
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("MailStatus")
+                        .HasColumnType("bit");
+
+                    b.HasKey("MailID");
+
+                    b.HasIndex("Mail")
+                        .IsUnique();
+
+                    b.ToTable("NewsLetters");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Writer", b =>
@@ -211,7 +235,7 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("WriterMail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("WriterName")
                         .IsRequired()
@@ -226,7 +250,10 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("WriterID");
 
-                    b.ToTable("Writers", (string)null);
+                    b.HasIndex("WriterMail")
+                        .IsUnique();
+
+                    b.ToTable("Writers");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Blog", b =>
@@ -237,7 +264,15 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EntityLayer.Concrete.Writer", "Writer")
+                        .WithMany()
+                        .HasForeignKey("WriterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Writer");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Comment", b =>

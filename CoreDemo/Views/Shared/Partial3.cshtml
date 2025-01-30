@@ -1,15 +1,15 @@
-﻿<footer>
+﻿
+<footer>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
 				<h3>Hakkımızda</h3>
-				<p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. lacinia eget consectetur sed, convallis at tellus..</p>
+				<p>Güvenilir ve kaliteli içerik sunan bir blog platformuyuz. Okuyucularımıza ilgi çekici, öğretici ve değer katan içerikler sunarak bilgiye erişimlerini kolaylaştırıyoruz. Amacımız, etkileşimli ve dinamik yapımızla bilginin gücünü herkesle buluşturmak ve alanında öncü bir platform olmaktır.</p>
 				<div class="read">
-					<a href="single.html" class="btn btn-primary read-m">Devamını Oku</a>
+					<a href="/About/Index/" class="btn btn-primary read-m">Devamını Oku</a>
 				</div>
 			</div>
 			<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
-
 				<div class="tech-btm">
 					<h3>Son Gönderiler</h3>
 					<div class="blog-grids row mb-3">
@@ -72,19 +72,9 @@
 				</div>
 			</div>
 			<!-- subscribe -->
-			<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left">
-				<h2>Signup to our newsletter</h2>
-				<div class="subscribe-main text-left">
-					<div class="subscribe-form">
-						<form action="#" method="post" class="subscribe_form">
-							<input class="form-control" type="email" placeholder="Enter your email..." required="">
-							<button type="submit" class="btn btn-primary submit">Submit</button>
-						</form>
-						<div class="clearfix"> </div>
-					</div>
-					<p>We respect your privacy.No spam ever!</p>
-				</div>
-				<!-- //subscribe -->
+			<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left footer-subscribe text-white">
+				<h4>Haberdar olmak için abone ol!</h4>
+				@await Html.PartialAsync("~/Views/NewsLetter/SubscribeMail.cshtml")
 			</div>
 		</div>
 		<!-- footer -->
@@ -122,7 +112,7 @@
 			</div>
 			<div class="w3layouts-agile-copyrightbottom">
 				<p>
-					© @DateTime.Now.Year Weblog. All Rights Reserved | Design by
+					© @DateTime.Now.Year Weblog. Tüm Hakları Saklıdır | Design by
 					<a href="http://w3layouts.com/">W3layouts</a>
 				</p>
 

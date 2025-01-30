@@ -16,6 +16,12 @@ namespace DataAccessLayer.Concrete
             //optionsBuilder.UseSqlServer("Server=DESKTOP-ARPGO20; Database=CoreBlogDb; Trusted_Connection=True; TrustServerCertificate=True;");
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NewsLetter>().HasIndex(x=>x.Mail).IsUnique();
+            modelBuilder.Entity<Writer>().HasIndex(x => x.WriterMail).IsUnique();
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<About> Abouts { get; set; }
         public DbSet<Blog> Blogs { get; set; }
@@ -23,5 +29,6 @@ namespace DataAccessLayer.Concrete
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Writer> Writers { get; set; }
+        public DbSet<NewsLetter> NewsLetters { get; set; }
     }
 }

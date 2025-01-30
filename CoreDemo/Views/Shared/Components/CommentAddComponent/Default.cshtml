@@ -1,0 +1,50 @@
+﻿<div class="comment-top">
+    <h4>Yorum Yap</h4>
+    <div class="comment-bottom">
+        <form id="commentForm" method="post">
+            <input class="form-control" type="text" id="CommentUserName" name="CommentUserName" placeholder="Adınız Soyadınız" required="">
+            <input class="form-control" type="text" id="CommentTitle" name="CommentTitle" placeholder="Konu Başlığı" required="">
+            <textarea id="CommentContent" class="form-control" name="CommentContent" placeholder="Mesajınız" required=""></textarea>
+            <button type="submit" class="btn btn-primary submit">Submit</button>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#commentForm').on('submit', function(e) {
+                    e.preventDefault(); // Sayfa yenilenmesini engelle
+                            console.log('@Url.Action("CommentAdd", "CommentController")');
+
+                       var blogId = '@ViewBag.BlogID';
+
+                       var formData = {
+                           CommentUserName: $('#CommentUserName').val(),
+                           CommentTitle: $('#CommentTitle').val(),
+                           CommentContent: $('#CommentContent').val(),
+                           BlogID: blogId,  // Burada blogId'yi kullanıyoruz
+                           CommentStatus: true,
+                           CommentDate: new Date().toISOString()  // Tarih formatı düzeltildi
+                       };
+
+                    $.ajax({
+                        url: '/Comment/CommentAdd',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData),
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Yorum Başarıyla Eklendi!');
+                            } else {
+                                alert('Hata: ' + response.message);
+                            }
+                            $("#commentList").load("/Comment/RefreshCommentList/" + blogId);
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz. Hata: ' + xhr.responseText);
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</div>

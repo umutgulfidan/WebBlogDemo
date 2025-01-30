@@ -20,8 +20,10 @@ namespace CoreDemo.Controllers
                 // ID verilmediği durumda bir hata mesajı veya başka bir sayfaya yönlendirme yapılabilir
                 return RedirectToAction("Index", "Blog");  // Blog ana sayfasına yönlendirme örneği
             }
-
             var values = _blogManager.GetBlogByID(id);
+
+            ViewBag.WriterID = values.First().WriterID;
+
             return View(values);
         }
     }

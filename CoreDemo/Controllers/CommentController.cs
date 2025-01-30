@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
@@ -12,13 +13,34 @@ namespace CoreDemo.Controllers
         {
             return View();
         }
-        public PartialViewResult PartialAddComment()
+
+
+        public IActionResult RefreshCommentList(int id)
         {
-            return PartialView();
+            string referer = Request.Headers["Referer"].ToString();
+
+            if (string.IsNullOrEmpty(referer) || !referer.Contains("/Blog/Details/")) // Blog detay sayfasından gelmiyorsa
+            {
+                return Unauthorized("Bu sayfaya doğrudan erişemezsiniz.");
+            }
+
+            return ViewComponent("CommentListByBlog", new { id = id });
         }
-        public PartialViewResult CommentListByBlog(int id) {
-            var values = _commentManager.GetList(id);
-            return PartialView(values);
+
+        [HttpPost]
+        public JsonResult CommentAdd([FromBody] Comment comment)
+        {
+            comment.CommentDate = DateTime.Now;
+            if (comment != null)
+            {
+                // Yorum veritabanına ekleme
+                _commentManager.CommentAdd(comment);
+
+                // JSON yanıtı döndürme
+                return new JsonResult(new { success = true, message = "Yorum başarıyla eklendi!" });
+            }
+
+            return new JsonResult(new { success = false, message = "Geçersiz veri!" });
         }
     }
 }
