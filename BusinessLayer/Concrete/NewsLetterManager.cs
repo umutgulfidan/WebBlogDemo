@@ -18,9 +18,15 @@ namespace BusinessLayer.Concrete
             _newsLetterDal = newsLetterDal;
         }
 
-        public void AddNewsLetter(NewsLetter newsLetter)
+
+        public NewsLetter GetById(int id)
         {
-            _newsLetterDal.Insert(newsLetter);
+            return _newsLetterDal.GetById(id);
+        }
+
+        public List<NewsLetter> GetList()
+        {
+            return _newsLetterDal.GetListAll();
         }
 
         public bool IsEmailExists(NewsLetter newsLetter)
@@ -31,6 +37,21 @@ namespace BusinessLayer.Concrete
         public bool IsEmailExists(string email)
         {
             return _newsLetterDal.GetListAll(x => x.Mail == email).Any();
+        }
+
+        public void TAdd(NewsLetter t)
+        {
+            _newsLetterDal.Insert(t);
+        }
+
+        public void TDelete(NewsLetter t)
+        {
+            _newsLetterDal.Delete(t);
+        }
+
+        public void TUpdate(NewsLetter t)
+        {
+            _newsLetterDal.Update(t);
         }
     }
 }

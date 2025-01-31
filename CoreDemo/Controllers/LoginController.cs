@@ -16,17 +16,20 @@ namespace CoreDemo.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Index(Writer writer)
         {
             Context context = new Context();
             var dataValue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
+
             if (dataValue != null)
             {
                 var claims = new List<Claim>{
                     new Claim(ClaimTypes.Name,writer.WriterMail),
                 };
+
                 var userIdentity = new ClaimsIdentity(claims,"a");
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                 await HttpContext.SignInAsync(principal);

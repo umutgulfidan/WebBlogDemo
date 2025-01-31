@@ -1,53 +1,9 @@
 ﻿
-
 <div class="tech-btm">
-	<p>En yeni bloglardan haberdar ol!</p>
-	<form id="subscribeForm" method="post">
-		<input id="email" type="email" placeholder="Email" name="Mail" required="">
-		<input type="submit" value="Subscribe">
-	</form>
-    <div id="responseMessage">
-
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#subscribeForm').on('submit', function (e) {
-                e.preventDefault(); // Formun sayfayı yenilemesini engelle
-
-                var email = $('#email').val();
-                var submitButton = $('#subscribeForm button[type="submit"]');
-
-                submitButton.prop('disabled', true).text('Gönderiliyor...');
-
-                $.ajax({
-                    url: '/NewsLetter/SubscribeMail',
-                    type: 'POST',
-                    data: { Mail: email },
-                    success: function (response) {
-                        if (response.success) {
-                            $('#responseMessage')
-                                .html('<div class="alert alert-success"><strong>Başarıyla abone oldunuz!</strong></div>')
-                                .css('display', 'block');
-                        } else {
-                            $('#responseMessage')
-                                .html('<div class="alert alert-danger"><strong>' + response.message + '</strong></div>')
-                                .css('display', 'block');
-                        }
-                        $('#email').val(''); // Formu temizle
-                    },
-                    error: function () {
-                        $('#responseMessage')
-                            .html('<div class="alert alert-danger"><strong>Bir hata oluştu. Lütfen tekrar deneyin.</strong></div>')
-                            .css('display', 'block');
-                    },
-                    complete: function () {
-                        submitButton.prop('disabled', false).text('Abone Ol');
-                    }
-                });
-            });
-        });
-    </script>
-
+    <p>En yeni bloglardan haberdar ol!</p>
+    <form class="subscribeForm" method="post">
+        <input type="email" class="emailInput" placeholder="Email" name="Mail" required>
+        <input type="submit" value="Subscribe">
+    </form>
+    <div class="responseMessage"></div>
 </div>

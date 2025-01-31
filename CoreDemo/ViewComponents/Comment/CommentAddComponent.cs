@@ -11,9 +11,8 @@ namespace CoreDemo.ViewComponents.Comment
 
         [HttpGet]
         public IViewComponentResult Invoke(int id)
-        {
-            ViewBag.BlogID = id;           
-            return View();
+        {         
+            return View(id);
         }
 
     }

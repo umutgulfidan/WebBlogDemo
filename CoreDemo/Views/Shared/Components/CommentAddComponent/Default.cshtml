@@ -1,10 +1,11 @@
-﻿<div class="comment-top">
+﻿@model int
+<div class="comment-top">
     <h4>Yorum Yap</h4>
     <div class="comment-bottom">
         <form id="commentForm" method="post">
-            <input class="form-control" type="text" id="CommentUserName" name="CommentUserName" placeholder="Adınız Soyadınız" required="">
-            <input class="form-control" type="text" id="CommentTitle" name="CommentTitle" placeholder="Konu Başlığı" required="">
-            <textarea id="CommentContent" class="form-control" name="CommentContent" placeholder="Mesajınız" required=""></textarea>
+            <input style="color:black;" class="form-control" type="text" id="CommentUserName" name="CommentUserName" placeholder="Adınız Soyadınız" required="">
+            <input style ="color:black;" class="form-control" type="text" id="CommentTitle" name="CommentTitle" placeholder="Konu Başlığı" required="">
+            <textarea style="color:black;" id="CommentContent" class="form-control" name="CommentContent" placeholder="Mesajınız" required=""></textarea>
             <button type="submit" class="btn btn-primary submit">Submit</button>
         </form>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,7 +16,7 @@
                     e.preventDefault(); // Sayfa yenilenmesini engelle
                             console.log('@Url.Action("CommentAdd", "CommentController")');
 
-                       var blogId = '@ViewBag.BlogID';
+                       var blogId = @Model;
 
                        var formData = {
                            CommentUserName: $('#CommentUserName').val(),

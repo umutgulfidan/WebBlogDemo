@@ -2,6 +2,7 @@
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
@@ -19,7 +20,7 @@ namespace CoreDemo.Controllers
         {
             string referer = Request.Headers["Referer"].ToString();
 
-            if (string.IsNullOrEmpty(referer) || !referer.Contains("/Blog/Details/")) // Blog detay sayfasından gelmiyorsa
+            if (string.IsNullOrEmpty(referer) || !referer.Contains("/Blog/BlogReadAll/")) 
             {
                 return Unauthorized("Bu sayfaya doğrudan erişemezsiniz.");
             }
@@ -34,7 +35,7 @@ namespace CoreDemo.Controllers
             if (comment != null)
             {
                 // Yorum veritabanına ekleme
-                _commentManager.CommentAdd(comment);
+                _commentManager.TAdd(comment);
 
                 // JSON yanıtı döndürme
                 return new JsonResult(new { success = true, message = "Yorum başarıyla eklendi!" });

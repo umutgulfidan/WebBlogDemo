@@ -32,4 +32,9 @@
     <Folder Include="Views\Comment\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\writer\.DS_Store" />
+    <None Include="wwwroot\writer\PSD\.DS_Store" />
+  </ItemGroup>
+
 </Project>

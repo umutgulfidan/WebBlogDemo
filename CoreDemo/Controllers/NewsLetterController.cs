@@ -3,10 +3,12 @@ using BusinessLayer.ValidationRules;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
 {
+    [AllowAnonymous]
     public class NewsLetterController : Controller
     {
         NewsLetterManager _newsLetterManager = new NewsLetterManager(new EfNewsLetterRepository());
@@ -44,7 +46,7 @@ namespace CoreDemo.Controllers
             }
 
             
-            _newsLetterManager.AddNewsLetter(newsLetter);
+            _newsLetterManager.TAdd(newsLetter);
             return Json(new { success = true, message = "Başarıyla abone oldunuz!" });
         }
     }
