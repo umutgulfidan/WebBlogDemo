@@ -1,0 +1,67 @@
+﻿@model List<Blog>
+@{
+    ViewData["Title"] = "BlogListByWriter";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+<h1>Yazarın blogları</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Blog Başlığı</th>
+        <th>Kategori</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Durum</th>
+        <th>Sil</th>
+        <th>Düzenle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><b>@item.BlogID</b></td>
+            <td>@item.BlogTitle</td>
+            <td>@item.Category.CategoryName</td>
+            <td>@item.BlogCreateDate.ToString("dd MMM yyyy")</td>
+            @if (item.BlogStatus == true)
+            {
+                <td><span style="background-color:limegreen;border:none;" class="badge badge-primary">Aktif</span></td>
+            }
+            else
+            {
+                <td><span style="background-color:indianred;border:none;" class="badge badge-primary">Deaktif</span></td>
+            }
+            <td>
+                <a href="#" onclick="confirmDialog(event, '/Blog/DeleteBlog/@item.BlogID')" class="btn btn-danger">Sil</a>
+            </td>
+            <td><a href="#" class="btn btn-warning">Düzenle</a></td>
+        </tr>
+    }
+</table>
+<a href="#" class="btn btn-primary">Yeni Blog Oluştur</a>
+
+<script>
+    function confirmDialog(event, url) {
+        event.preventDefault();  // Öncelikle linkin çalışmasını engelle
+
+        Swal.fire({
+            title: "Silme Onayı",
+            text: "Silmek İstediğinize Emin Misiniz?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Onayla"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Silme işlemi onaylandığında, önce başarı mesajını göster
+                Swal.fire({
+                    title: "Başarılı!",
+                    text: "Başarıyla Silindi!",
+                    icon: "success"
+                }).then(() => {
+                    // Başarı mesajı gösterildikten sonra sayfayı yenileyin
+                    window.location.href = url;  // Yönlendirme yapılır
+                });
+            }
+        });
+    }
+</script>

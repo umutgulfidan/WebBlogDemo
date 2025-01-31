@@ -18,11 +18,6 @@ namespace BusinessLayer.Concrete
             _blogDal = blogDal;
         }
 
-        public List<Blog> GetBlogByID(int id)
-        {
-            return _blogDal.GetListAll(b=> b.BlogID == id);
-        }
-
         public Blog GetById(int id)
         {
             return _blogDal.GetById(id);
@@ -47,7 +42,10 @@ namespace BusinessLayer.Concrete
         {
             return _blogDal.GetListAll(b => b.WriterID ==id);
         }
-
+        public List<Blog> GetListWithCategoryByWriter(int writerId)
+        {
+            return _blogDal.GetListWithCategoryByWriter(writerId);
+        }
         public void TAdd(Blog t)
         {
             _blogDal.Insert(t);
@@ -62,5 +60,6 @@ namespace BusinessLayer.Concrete
         {
             _blogDal.Update(t);
         }
+
     }
 }
