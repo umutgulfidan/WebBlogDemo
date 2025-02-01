@@ -80,5 +80,29 @@ namespace CoreDemo.Controllers
             _blogManager.TDelete(blog);
             return RedirectToAction("BlogListByWriter");
         }
+
+        [HttpGet]
+        public IActionResult EditBlog(int id)
+        {
+            var blogValue = _blogManager.GetById(id);
+            CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+            List<SelectListItem> categoryValues = (from x in cm.GetList()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.CategoryName,
+                                                       Value = x.CategoryID.ToString()
+                                                   }
+                                                   ).ToList();
+            ViewBag.cv = categoryValues;
+
+            return View(blogValue);
+        }
+        [HttpPost]
+        
+        public IActionResult EditBlog(Blog blog)
+        {
+            _blogManager.TUpdate(blog);
+            return RedirectToAction("BlogListByWriter");
+        }
     }
 }
