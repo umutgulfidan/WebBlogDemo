@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Comment\" />
+    <Folder Include="wwwroot\WriterImagesFolder\" />
   </ItemGroup>
 
   <ItemGroup>
