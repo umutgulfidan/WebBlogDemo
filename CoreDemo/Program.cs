@@ -46,11 +46,12 @@ app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1","?code={0}");
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
+
 
 // Login iþlemi için
-app.UseSession();
 app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession();
 
 app.MapStaticAssets();
 

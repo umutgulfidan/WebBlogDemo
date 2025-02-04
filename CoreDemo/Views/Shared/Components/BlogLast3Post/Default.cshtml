@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Blog>
 
-<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
 	<div class="tech-btm">
 		<h3>Son Gönderiler</h3>
+		<br />
 		@foreach(var item in Model){
 			<div class="blog-grids row mb-3">
 				<div class="col-md-5 blog-grid-left">
 					<a href="/Blog/BlogReadAll/@item.BlogID">
-						<img src="@item.BlogThumbnailImage" class="card-img-top img-fluid" alt="">
+						<img src="~/BlogImagesFolder/BlogThumbnailImage/@item.BlogThumbnailImage" class="card-img-top img-fluid" alt="">
 					</a>
 				</div>
 				<div class="col-md-7 blog-grid-right">
@@ -25,4 +25,3 @@
 		}
 
 	</div>
-</div>

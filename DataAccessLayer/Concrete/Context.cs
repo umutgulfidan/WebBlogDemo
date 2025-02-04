@@ -13,6 +13,7 @@ namespace DataAccessLayer.Concrete
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=CoreBlogDb;Trusted_Connection=true;");
+
             //optionsBuilder.UseSqlServer("Server=DESKTOP-ARPGO20; Database=CoreBlogDb; Trusted_Connection=True; TrustServerCertificate=True;");
 
         }
@@ -35,6 +36,9 @@ namespace DataAccessLayer.Concrete
                 .HasForeignKey(m => m.ReceiverID)
                 .OnDelete(DeleteBehavior.Restrict); // Alıcı silindiğinde mesajlar silinmesin
 
+            // Triggers
+            modelBuilder.Entity<Blog>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Comment>().ToTable(tb => tb.UseSqlOutputClause(false));
 
             base.OnModelCreating(modelBuilder);
         }

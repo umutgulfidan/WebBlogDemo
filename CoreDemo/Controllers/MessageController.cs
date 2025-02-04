@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using System.Security.Claims;
+using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,8 @@ namespace CoreDemo.Controllers
         MessageManager _messageManager = new MessageManager(new EfMessageRepository());
         public IActionResult InBox()
         {
-            var values = _messageManager.GetListByReceiver(1);
+            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+            var values = _messageManager.GetListByReceiver(Convert.ToInt32(id));
             return View(values);
         }
         [HttpGet]

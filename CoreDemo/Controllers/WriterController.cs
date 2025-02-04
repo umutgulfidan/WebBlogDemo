@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using System.Security.Claims;
+using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using CoreDemo.Models;
 using DataAccessLayer.EntityFramework;
@@ -12,24 +13,7 @@ namespace CoreDemo.Controllers
     public class WriterController : Controller
     {
         WriterManager _writerManager = new WriterManager(new EfWriterRepository());
-        public IActionResult Index()
-        {
-            return View();
-        }
 
-        public IActionResult WriterProfile()
-        {
-            return View();
-        }
-
-        public IActionResult WriterMail()
-        {
-            return View();
-        }
-        public IActionResult Test()
-        {
-            return View();
-        }
         public PartialViewResult WriterNavbarPartial()
         {
             return PartialView();
@@ -42,7 +26,8 @@ namespace CoreDemo.Controllers
         [HttpGet]
         public IActionResult WriterEditProfile()
         {
-            var writerValues = _writerManager.GetById(1);
+            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+            var writerValues = _writerManager.GetById(Convert.ToInt32(id));
             return View(writerValues);
         }
         [HttpPost]

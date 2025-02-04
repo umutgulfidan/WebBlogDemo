@@ -10,7 +10,7 @@ namespace CoreDemo.ViewComponents.Blog
 
         public IViewComponentResult Invoke(int id)
         {
-            var values = _blogManager.GetBlogListWithWriter(id).TakeLast(3).ToList();
+            var values = _blogManager.GetBlogListWithWriter(id).OrderByDescending(x=>x.BlogCreateDate).Take(5).ToList();
             return View(values);
         }
     }

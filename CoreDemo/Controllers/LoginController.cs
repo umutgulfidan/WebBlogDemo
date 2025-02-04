@@ -27,14 +27,16 @@ namespace CoreDemo.Controllers
             if (dataValue != null)
             {
                 var claims = new List<Claim>{
-                    new Claim(ClaimTypes.Name,writer.WriterMail),
+                    new Claim(ClaimTypes.NameIdentifier,dataValue.WriterID.ToString()),
+                    new Claim(ClaimTypes.Name,dataValue.WriterName),
+                    new Claim(ClaimTypes.Email, dataValue.WriterMail),
                 };
 
                 var userIdentity = new ClaimsIdentity(claims,"a");
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                 await HttpContext.SignInAsync(principal);
 
-                return RedirectToAction("Index","Writer");
+                return RedirectToAction("Index","Dashboard");
             }
             else
             {

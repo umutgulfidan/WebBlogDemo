@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using System.Security.Claims;
+using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
@@ -32,7 +33,8 @@ namespace CoreDemo.Controllers
 
         public IActionResult BlogListByWriter()
         {
-            var values = _blogManager.GetListWithCategoryByWriter(1);
+            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+            var values = _blogManager.GetListWithCategoryByWriter(id);
             return View(values);
         }
         [HttpGet]
@@ -54,11 +56,13 @@ namespace CoreDemo.Controllers
         {
             BlogValidator blogValidator = new BlogValidator();
             ValidationResult results = blogValidator.Validate(blog);
+            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+
             if (results.IsValid)
             {
                 blog.BlogStatus = true;
                 blog.BlogCreateDate = DateTime.Now;
-                blog.WriterID = 1;
+                blog.WriterID = id;
                 _blogManager.TAdd(blog);
                 return RedirectToAction("BlogListByWriter", "Blog");
             }

@@ -8,8 +8,11 @@
 				<div class="read">
 					<a href="/About/Index/" class="btn btn-primary read-m">Devamını Oku</a>
 				</div>
+			</div>			
+			<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left footer-subscribe text-white">
+				@await Component.InvokeAsync("BlogLast3Post")
 			</div>
-			@await Component.InvokeAsync("BlogLast3Post")
+
 			<!-- subscribe -->
 			<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left footer-subscribe text-white">
 				<h4>Haberdar olmak için abone ol!</h4>
