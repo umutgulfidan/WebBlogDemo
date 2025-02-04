@@ -20,9 +20,9 @@ namespace EntityLayer.Concrete
         public DateTime MessageDate { get; set; }
         public bool MessageStatus { get; set; }
 
-        [ForeignKey("SenderID")]
+        //[ForeignKey("SenderID")]
         public Writer Sender { get; set; }
-        [ForeignKey("ReceiverID")]
+        //[ForeignKey("ReceiverID")]
         public Writer Receiver { get; set; }
 
     }

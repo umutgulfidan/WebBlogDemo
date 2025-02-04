@@ -25,13 +25,13 @@ namespace DataAccessLayer.Concrete
             //
             modelBuilder.Entity<Message>()
             .HasOne(m => m.Sender)
-            .WithMany()
+            .WithMany(y=>y.WriterSender)
             .HasForeignKey(m => m.SenderID)
             .OnDelete(DeleteBehavior.Restrict); // Gönderen silindiğinde mesajlar silinmesin
 
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Receiver)
-                .WithMany()
+                .WithMany(y=>y.WriterReceiver)
                 .HasForeignKey(m => m.ReceiverID)
                 .OnDelete(DeleteBehavior.Restrict); // Alıcı silindiğinde mesajlar silinmesin
 

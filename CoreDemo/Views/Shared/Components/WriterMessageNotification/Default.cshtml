@@ -6,7 +6,7 @@
 	@foreach(var item in Model){
 		<a class="dropdown-item preview-item">
 			<div class="preview-thumbnail">
-				<img src="@item.Sender.WriterImage" alt="image" class="profile-pic">
+				<img src="~/WriterImagesFolder/@item.Sender.WriterImage" alt="image" class="profile-pic">
 			</div>
 			<div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
 				<h6 class="preview-subject ellipsis mb-1 font-weight-normal">@item.Sender.WriterName sana bir mesaj gönderdi.</h6>
