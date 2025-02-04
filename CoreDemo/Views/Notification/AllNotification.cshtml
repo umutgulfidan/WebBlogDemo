@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Notification>
+@{
+	ViewData["Title"] = "AllNotification";
+	Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<h1>Bildirimler</h1>
+<br />
+<div class="table-responsive">
+	<table class="table table-bordered align-middle">
+		<thead>
+			<tr>
+				<th scope="col"></th>
+				<th scope="col">#</th>
+				<th scope="col">Bildirim</th> 
+				<th scope="col">Tarih</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td class="text-center">
+						<div class="d-flex justify-content-center align-items-center rounded-circle @item.NotificationTypeColor" style="width: 50px; height: 50px;">
+							<i class="@item.NotificationTypeSymbol fs-2"></i>
+						</div>
+					</td>
+					<td class="fw-bold">@item.NotificationID</td>
+					<td class="text-wrap word-break" style="max-width: 500px;">@item.NotificationDetails</td>
+					<td>@item.NotificationDate.ToShortDateString()</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

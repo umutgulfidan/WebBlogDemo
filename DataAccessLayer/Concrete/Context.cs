@@ -18,8 +18,24 @@ namespace DataAccessLayer.Concrete
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Uniq Keys
             modelBuilder.Entity<NewsLetter>().HasIndex(x=>x.Mail).IsUnique();
             modelBuilder.Entity<Writer>().HasIndex(x => x.WriterMail).IsUnique();
+
+            //
+            modelBuilder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderID)
+            .OnDelete(DeleteBehavior.Restrict); // Gönderen silindiğinde mesajlar silinmesin
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany()
+                .HasForeignKey(m => m.ReceiverID)
+                .OnDelete(DeleteBehavior.Restrict); // Alıcı silindiğinde mesajlar silinmesin
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -32,5 +48,6 @@ namespace DataAccessLayer.Concrete
         public DbSet<NewsLetter> NewsLetters { get; set; }
         public DbSet<BlogRating> BlogsRatings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
