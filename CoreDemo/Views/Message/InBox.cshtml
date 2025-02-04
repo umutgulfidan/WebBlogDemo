@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Message>
+@using CoreDemo.Models
+@{
+    ViewData["Title"] = "InBox";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<h1>Gelen Kutusu</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Konu</th>
+        <th>Gönderen</th>
+        <th>Tarih</th>
+        <th>Mesajı Aç</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><b>@item.MessageID</b></td>
+            <td>@item.Subject</td>
+            <td>@item.Sender.WriterName (@item.Sender.WriterMail)</td>
+            <td>@TimeHelper.CalcDifference(item.MessageDate)</td>
+            <td><a href="/Message/MessageDetails/@item.MessageID" class="btn-sm btn-warning">Mesajı Aç</a></td>
+        </tr>
+    }
+</table>
+
