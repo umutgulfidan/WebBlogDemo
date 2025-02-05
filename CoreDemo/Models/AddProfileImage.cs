@@ -1,6 +1,6 @@
 ﻿namespace CoreDemo.Models
 {
-    public class AddProfileImage
+    public class WriterWithImage
     {
         public int WriterID { get; set; }
         public string WriterName { get; set; }

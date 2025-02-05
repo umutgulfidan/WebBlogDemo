@@ -20,7 +20,7 @@
                             @foreach(var item in Model){
                                 <tr>
                                     <td>
-                                        <img src="@item.BlogThumbnailImage" class="mr-2" alt="image"> 
+                                        <img src="~/BlogImagesFolder/BlogThumbnailImage/@item.BlogThumbnailImage" class="mr-2" alt="image"> 
                                     </td>
                                     <td>
                                         @item.BlogTitle
@@ -30,7 +30,7 @@
                                     </td>
                                     <td> @item.BlogCreateDate.ToString("dd MMM yyyy") </td>
                                     <td>
-                                        <a class="btn-sm btn-dark" href="Blog/BlogReadAll/@item.BlogID/">Bloğu Görüntüle</a>
+                                        <a class="btn-sm btn-dark" href="/Blog/BlogReadAll/@item.BlogID/">Bloğu Görüntüle</a>
                                     </td>
                                 </tr>
                             }

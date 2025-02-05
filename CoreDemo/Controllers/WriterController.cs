@@ -14,10 +14,6 @@ namespace CoreDemo.Controllers
     {
         WriterManager _writerManager = new WriterManager(new EfWriterRepository());
 
-        public PartialViewResult WriterNavbarPartial()
-        {
-            return PartialView();
-        }
         public PartialViewResult WriterFooterPartial()
         {
             return PartialView();
@@ -27,16 +23,23 @@ namespace CoreDemo.Controllers
         public IActionResult WriterEditProfile()
         {
             var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            var writerValues = _writerManager.GetById(Convert.ToInt32(id));
+            var writerValues = _writerManager.GetById(id);
             return View(writerValues);
         }
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer writer)
+        public IActionResult WriterEditProfile(Writer writer,IFormFile file)
         {
             WriterValidator writerValidator = new WriterValidator();
             ValidationResult results = writerValidator.Validate(writer);
             if (results.IsValid)
             {
+
+                if(file != null)
+                {
+                    var writerImage = FileHelper.AddWriterImage(file);
+                    writer.WriterImage = writerImage;
+                }
+
                 _writerManager.TUpdate(writer);
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -56,23 +59,19 @@ namespace CoreDemo.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult WriterAdd(AddProfileImage addProfileImage)
+        public IActionResult WriterAdd(WriterWithImage writerWithImage)
         {
             Writer w = new Writer();
-            if(addProfileImage.WriterImage != null)
+            if(writerWithImage.WriterImage != null)
             {
-                var extension = Path.GetExtension(addProfileImage.WriterImage.FileName);
-                var newImageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImagesFolder/",newImageName);
-                var stream = new FileStream(location,FileMode.Create);
-                addProfileImage.WriterImage.CopyTo(stream);
+                var newImageName = FileHelper.AddWriterImage(writerWithImage.WriterImage);
                 w.WriterImage = newImageName;
             }
-            w.WriterName = addProfileImage.WriterName;
-            w.WriterStatus = addProfileImage.WriterStatus;
-            w.WriterPassword = addProfileImage.WriterPassword;
-            w.WriterMail = addProfileImage.WriterMail;
-            w.WriterAbout = addProfileImage.WriterAbout;
+            w.WriterName = writerWithImage.WriterName;
+            w.WriterStatus = writerWithImage.WriterStatus;
+            w.WriterPassword = writerWithImage.WriterPassword;
+            w.WriterMail = writerWithImage.WriterMail;
+            w.WriterAbout = writerWithImage.WriterAbout;
             _writerManager.TAdd(w);
             return RedirectToAction("Index","Dashboard");
         }
