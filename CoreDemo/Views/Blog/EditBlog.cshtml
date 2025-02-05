@@ -10,21 +10,6 @@
 			<br />
 			@using (Html.BeginForm("EditBlog", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
 			{
-				@if (ViewData.ModelState["BlogTitle"]?.Errors.Count > 0)
-				{
-					<div class="alert alert-danger" , role="alert">
-						<h4>BLOG BAŞLIĞI HATASI</h4>
-						@Html.ValidationMessageFor(x => x.BlogTitle)
-					</div>
-				}
-				@if (ViewData.ModelState["BlogContent"]?.Errors.Count > 0)
-				{
-					<div class="alert alert-danger" , role="alert">
-						<h4>BLOG İÇERİĞİ HATASI</h4>
-						@Html.ValidationMessageFor(x => x.BlogContent)
-					</div>
-				}
-
 				@Html.HiddenFor(x => x.BlogID)
 				@Html.HiddenFor(x => x.BlogStatus)
 				@Html.HiddenFor(x => x.WriterID)
@@ -32,6 +17,7 @@
 				<br />
 				@Html.Label("Blog Başlığı")
 				@Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.BlogTitle, "", new { @class = "text-danger" })
 				<br />
 				<div class="form-group">
 					<label>Blog Kapak Görseli</label>
@@ -42,6 +28,7 @@
 							<button id="uploadBtn" class="file-upload-browse btn btn-gradient-primary" type="button">Resim Seç</button>
 						</span>
 					</div>
+					@Html.ValidationMessageFor(x => x.BlogThumbnailImage, "", new { @class = "text-danger" })
 				</div>
 				<br />
 				<div class="form-group">
@@ -53,13 +40,16 @@
 							<button id="uploadBtn" class="file-upload-browse btn btn-gradient-primary" type="button">Resim Seç</button>
 						</span>
 					</div>
+					@Html.ValidationMessageFor(x => x.BlogImage, "", new { @class = "text-danger" })
 				</div>
 				<br />
 				@Html.Label("Kategori")
 				@Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.cv, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.CategoryID, "", new { @class = "text-danger" })
 				<br />
 				@Html.Label("Blog İçeriği")
 				@Html.TextAreaFor(x => x.BlogContent, 25, 3, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.BlogContent, "", new { @class = "text-danger" })
 				<br />
 				<input class="btn btn-success" type="submit" value="Bloğu Kaydet">
 			}

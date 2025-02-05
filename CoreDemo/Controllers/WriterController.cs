@@ -29,22 +29,27 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public IActionResult WriterEditProfile(Writer writer,IFormFile file)
         {
+            bool isImageChanged = false;
+            if(file != null)
+            {
+                writer.WriterImage = FileHelper.AddWriterImage(file);
+                isImageChanged = true;
+            }
             WriterValidator writerValidator = new WriterValidator();
             ValidationResult results = writerValidator.Validate(writer);
             if (results.IsValid)
             {
-
-                if(file != null)
-                {
-                    var writerImage = FileHelper.AddWriterImage(file);
-                    writer.WriterImage = writerImage;
-                }
-
                 _writerManager.TUpdate(writer);
                 return RedirectToAction("Index", "Dashboard");
             }
             else
             {
+
+                if (isImageChanged)
+                {
+                    FileHelper.DeleteWriterImage(writer.WriterImage);
+                }
+
                 ModelState.Clear();
                 foreach (var item in results.Errors)
                 {

@@ -11,32 +11,12 @@
 			<br />
 			@using (Html.BeginForm("BlogAdd", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
 			{
-				@if (ViewData.ModelState["BlogTitle"]?.Errors.Count > 0)
-				{
-					<div class="alert alert-danger" , role="alert">
-						<h4>BLOG BAŞLIĞI HATASI</h4>
-						@Html.ValidationMessageFor(x => x.BlogTitle)
-					</div>
-				}
-				@if (ViewBag.ImageError != null)
-				{
-					<div class="alert alert-danger" role="alert">
-						<h4>BLOG RESMİ HATASI</h4>
-						@ViewBag.ImageError
-					</div>
-				}
-				@if (ViewData.ModelState["BlogContent"]?.Errors.Count > 0)
-				{
-					<div class="alert alert-danger" , role="alert">
-						<h4>BLOG İÇERİĞİ HATASI</h4>
-						@Html.ValidationMessageFor(x => x.BlogContent)
-					</div>
-				}
-
-
 
 				@Html.Label("Blog Başlığı")
 				@Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.BlogTitle, "", new { @class = "text-danger" })
+				<br />
+
 				<div class="form-group">
 					<label>Blog Kapak Görseli</label>
 					<input id="fileInput" type="file" name="BlogThumbnailImage" class="file-upload-default">
@@ -46,6 +26,7 @@
 							<button id="uploadBtn" class="file-upload-browse btn btn-gradient-primary" type="button">Resim Seç</button>
 						</span>
 					</div>
+					@Html.ValidationMessageFor(x => x.BlogThumbnailImage, "", new { @class = "text-danger" })
 				</div>
 
 				<br />
@@ -59,17 +40,20 @@
 							<button id="uploadBtn" class="file-upload-browse btn btn-gradient-primary" type="button">Resim Seç</button>
 						</span>
 					</div>
+					@Html.ValidationMessageFor(x => x.BlogImage, "", new { @class = "text-danger" })
 				</div>
 
 				<br />
 
 				@Html.Label("Kategori")
 				@Html.DropDownListFor(x => x.CategoryID, (List<SelectListItem>)ViewBag.cv, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.CategoryID, "", new { @class = "text-danger" })
 
 				<br />
 
 				@Html.Label("Blog İçeriği")
 				@Html.TextAreaFor(x => x.BlogContent, 25, 10, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.BlogContent, "", new { @class = "text-danger" })
 
 
 				<input class="btn btn-success" type="submit" value="Blog Ekle">

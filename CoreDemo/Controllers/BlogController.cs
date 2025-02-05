@@ -67,16 +67,12 @@ namespace CoreDemo.Controllers
 
             var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            if (!CheckBothOfImages(blogWithImage))
-            {
-                ViewBag.ImageError = "İki Resmi Seçtiğinizden de emin olun!";
-            }
 
             Blog blog = new Blog()
             {
                 BlogStatus = true,
-                BlogImage = CheckBothOfImages(blogWithImage) ? FileHelper.AddBlogImage(blogWithImage.BlogImage) : "",
-                BlogThumbnailImage = CheckBothOfImages(blogWithImage) ? FileHelper.AddBlogThumbnailImage(blogWithImage.BlogThumbnailImage) : "",
+                BlogImage = blogWithImage.BlogImage != null ? FileHelper.AddBlogImage(blogWithImage.BlogImage) : "",
+                BlogThumbnailImage = blogWithImage.BlogThumbnailImage != null ? FileHelper.AddBlogThumbnailImage(blogWithImage.BlogThumbnailImage) : "",
                 BlogCreateDate = DateTime.Now,
                 BlogContent = blogWithImage.BlogContent,
                 BlogTitle = blogWithImage.BlogTitle,
@@ -95,6 +91,9 @@ namespace CoreDemo.Controllers
             }
             else
             {
+                FileHelper.DeleteBlogImage(blog.BlogImage);
+                FileHelper.DeleteBlogThumbnailImage(blog.BlogThumbnailImage);
+
                 ModelState.Clear();
                 foreach (var item in results.Errors)
                 {
@@ -151,8 +150,20 @@ namespace CoreDemo.Controllers
 
             BlogValidator blogValidator = new BlogValidator();
             ValidationResult results = blogValidator.Validate(blog);
-            blog.BlogImage = blogWithImage.BlogImage != null ? FileHelper.AddBlogImage(blogWithImage.BlogImage) : blog.BlogImage;
-            blog.BlogThumbnailImage = blogWithImage.BlogThumbnailImage != null ? FileHelper.AddBlogThumbnailImage(blogWithImage.BlogThumbnailImage) : blog.BlogThumbnailImage;
+
+            bool isBlogImageChanged = false;
+            bool isBlogThumbnailImageChanged = false;
+
+            if(blogWithImage.BlogImage != null)
+            {
+                blog.BlogImage = FileHelper.AddBlogImage(blogWithImage.BlogImage);
+                isBlogImageChanged = true;
+            }
+            if(blogWithImage.BlogThumbnailImage != null)
+            {
+                blog.BlogThumbnailImage = FileHelper.AddBlogThumbnailImage(blogWithImage.BlogThumbnailImage);
+                isBlogThumbnailImageChanged = true;
+            }
 
 
             if (results.IsValid)
@@ -162,6 +173,14 @@ namespace CoreDemo.Controllers
             }
             else
             {
+                if (isBlogImageChanged)
+                {
+                    FileHelper.DeleteBlogImage(blog.BlogImage);
+                }
+                if (isBlogThumbnailImageChanged)
+                {
+                    FileHelper.DeleteBlogThumbnailImage(blog.BlogThumbnailImage);
+                }
                 ModelState.Clear();
                 foreach (var item in results.Errors)
                 {

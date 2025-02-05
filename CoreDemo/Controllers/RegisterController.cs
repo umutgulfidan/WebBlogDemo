@@ -1,5 +1,7 @@
-﻿using BusinessLayer.Concrete;
+﻿using System.Transactions;
+using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using CoreDemo.Models;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
@@ -20,28 +22,33 @@ namespace CoreDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(Writer p)
+        public IActionResult Index(Writer p,IFormFile file)
         {
-            WriterValidator writerValidator = new WriterValidator();
-            ValidationResult results = writerValidator.Validate(p);
-            if (results.IsValid)
-            {
-                p.WriterStatus = true;
-                p.WriterAbout = "Deneme Test";
-                _writerManager.TAdd(p);
-                return RedirectToAction("Index", "Blog");
-            }
-            else
-            {
-                ModelState.Clear();
-                foreach (var item in results.Errors)
+
+                if (file != null)
                 {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-
+                    p.WriterImage = FileHelper.AddWriterImage(file);
                 }
-            }
-            return View(p);
+                p.WriterStatus = true;
 
+                WriterValidator writerValidator = new WriterValidator();
+                ValidationResult results = writerValidator.Validate(p);
+                if (results.IsValid)
+                {
+
+                    _writerManager.TAdd(p);
+                    return RedirectToAction("Index", "Blog");
+                }
+                else
+                {
+                FileHelper.DeleteWriterImage(p.WriterImage);
+                    ModelState.Clear();
+                    foreach (var item in results.Errors)
+                    {
+                        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    }
+                }
+                return View(p);
         }
     }
 }
