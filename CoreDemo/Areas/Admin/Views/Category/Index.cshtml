@@ -1,0 +1,90 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>Kategori Listesi</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Kategori Adı</th>
+            <th>Kategori Açıklaması</th>
+            <th class="text-center">Durumu</th>
+            <th class="text-center">Aktif Yap / Pasif Yap</th>
+            <th class="text-center">Düzenle</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryID</td>
+                <td>@item.CategoryName</td>
+                <td>@item.CategoryDescription</td>
+                @if (item.CategoryStatus)
+                {
+                    <td class="text-center"><span style="background-color:limegreen;border:none;" class="badge badge-primary">Aktif</span></td>
+                }
+                else
+                {
+                    <td class="text-center"><span style="background-color:indianred;border:none;" class="badge badge-primary">Deaktif</span></td>
+                }
+                @if(item.CategoryStatus){
+                    <td class="text-center"><button onclick="return pasifEt(@item.CategoryID)" class="btn btn-danger">Pasif Yap</button></td>
+                }
+                else{
+                    <td class="text-center"><button class="btn btn-primary" onclick="return aktifEt(@item.CategoryID)">Aktif Yap</button></td>
+                }
+                <td class="text-center"><a href="/Admin/Category/EditCategory/@item.CategoryID" class="btn btn-info">Düzenle</a></td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>
+<a href="/Admin/Category/AddCategory/" class=" btn btn-secondary">Yeni Kategori EKle</a>
+<br />
+<br />
+@Html.PagedListPager((IPagedList)Model,page=>Url.Action("Index",new { page }))
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+<script>
+    function pasifEt(categoryId){
+    Swal.fire({
+      title: "Dikkat!",
+      text: "Kategoriyi pasif etmek istediğine emin misin?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Onayla!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/Admin/Category/DeactivateCategory/" + categoryId;
+      }
+    });
+    return false;
+    }
+    function aktifEt(categoryId){
+    Swal.fire({
+      title: "Dikkat!",
+      text: "Kategoriyi aktif etmek istediğine emin misin?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Onayla!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/Admin/Category/ActivateCategory/" + categoryId;
+      }
+    });
+    return false;
+    }
+</script>

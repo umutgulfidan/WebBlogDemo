@@ -1,0 +1,23 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "EditCategory";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>Kategori Düzenleme Sayfası</h1>
+<br />
+@using(Html.BeginForm("EditCategory","Category",FormMethod.Post)){
+    @Html.HiddenFor(x=>x.CategoryID)
+    @Html.HiddenFor(x=>x.CategoryStatus)
+    @Html.LabelFor(x=>x.CategoryName,"Kategori Adı")
+    @Html.TextBoxFor(x=>x.CategoryName,"",new {@class="form-control"})
+    @Html.ValidationMessageFor(x => x.CategoryName, "", new { @class = "text-danger" })
+    <br />
+    @Html.LabelFor(x => x.CategoryDescription, "Kategori Açıklaması")
+    @Html.TextAreaFor(x => x.CategoryDescription, 10 ,3, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.CategoryDescription, "", new { @class = "text-danger" })
+    <br />
+
+    <input class="btn btn-primary" type="submit" value="Düzenle">
+}
+
