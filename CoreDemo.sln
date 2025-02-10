@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLayer", "CoreLayer\CoreLayer.csproj", "{AE11CD6E-0911-4801-87E1-D05D3EC2C0B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApiDemo", "BlogApiDemo\BlogApiDemo.csproj", "{D31B46C9-1A79-48CE-A154-2434795FAF40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AE11CD6E-0911-4801-87E1-D05D3EC2C0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE11CD6E-0911-4801-87E1-D05D3EC2C0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE11CD6E-0911-4801-87E1-D05D3EC2C0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D31B46C9-1A79-48CE-A154-2434795FAF40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D31B46C9-1A79-48CE-A154-2434795FAF40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D31B46C9-1A79-48CE-A154-2434795FAF40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D31B46C9-1A79-48CE-A154-2434795FAF40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
