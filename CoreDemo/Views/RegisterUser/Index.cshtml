@@ -1,0 +1,124 @@
+﻿@model UserSignUpViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Register</title>
+
+    <link href="~/inspinia-gh-pages/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">CB</h1>
+
+            </div>
+            <h3>Kayıt Ekranı</h3>
+            <p>Yeni bir hesap oluşturun.</p>
+            <form class="m-t" role="form" asp-action="Index" method="post">
+
+                <div class="text-danger" asp-validation-summary="ModelOnly">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="NameSurname" class="text-danger"></span>
+                    <input type="text" class="form-control" asp-for="NameSurname" placeholder="Adınız Soyadınız" required="">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <input type="text" class="form-control" asp-for="UserName" placeholder="Kullanıcı Adınız" required="">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                    <input type="email" class="form-control" asp-for="Mail" placeholder="Email" required="">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Şifre" required="">
+                </div>
+
+                <div class="form-group">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Şifre Tekrar" required="">
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox i-checks"><label> <input type="checkbox" required><i></i> <a href="#" id="policy">Kullanım şartlarını</a> okudum kabul ediyorum. </label></div>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Kayıt Ol</button>
+
+                <p class="text-muted text-center"><small>Zaten bir hesabınız var mı?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="#">Giriş Yap</a>
+
+            </form>
+            <p class="m-t"> <small>Asp .Net Core Proje Kampı - Tüm Hakları Saklıdır &copy; @DateTime.Now.Year</small> </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Mainly scripts -->
+    <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
+    <script src="~/inspinia-gh-pages/js/popper.min.js"></script>
+    <script src="~/inspinia-gh-pages/js/bootstrap.js"></script>
+    <!-- iCheck -->
+    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+
+    <script>
+            document.getElementById("policy").onclick = function() {
+                Swal.fire({
+                    title: "Kullanım Şartları",
+                    html: `
+                        <div style="margin:15px;font-size:smaller">
+                                <p>Bu web sitesine üye olarak, aşağıdaki kullanım şartlarını kabul etmiş sayılırsınız. Lütfen şartları dikkatlice okuyun.</p><br/>
+
+                            <ul>
+                                <li><strong>1. Üyelik ve Hesap Güvenliği:</strong> Siteye üye olmak için doğru ve güncel bilgi sağlamanız gerekmektedir. Üyeliğinizle ilgili herhangi bir değişiklik durumunda bu bilgileri güncellemekle yükümlüsünüz. Hesabınızın güvenliği için şifrenizi kimseyle paylaşmamanız önemlidir. Hesabınızda gerçekleşebilecek her türlü etkinlikten siz sorumlusunuz.</li><br/>
+                                <li><strong>2. Yasaklı İçerikler:</strong> Sitemizde, ırkçılık, cinsiyetçilik, şiddet, nefret söylemi içeren veya yasadışı içerikler yayınlamak yasaktır. Herhangi bir yasadışı veya zararlı içerik paylaşmanız durumunda üyeliğiniz askıya alınabilir ve yasal işlemler başlatılabilir.</li><br/>
+                                <li><strong>3. Fikri Mülkiyet Hakları:</strong> Sitede yer alan içerikler, yazılar, görseller ve diğer materyaller telif hakkıyla korunmaktadır. Bu içerikleri izinsiz kullanmak yasaktır. Kendi içeriklerinizi siteye yüklerken, bu içeriklerin size ait olduğundan veya kullanma hakkınız olduğundan emin olmalısınız.</li><br/>
+                                <li><strong>4. Kullanıcı Davranışları:</strong> Diğer kullanıcılarla saygılı bir şekilde iletişim kurmanız beklenir. Hakaret, tehdit veya olumsuz davranışlar siteye girişinizi engelleyebilir. Siteyi sadece yasal ve etik amaçlar için kullanmanız gerekmektedir.</li><br/>
+                                <li><strong>5. Veri Koruma ve Gizlilik:</strong> Kişisel verileriniz, Gizlilik Politikamız’a uygun olarak toplanır ve saklanır. Üyelik esnasında verdiğiniz bilgiler yalnızca belirtilen amaçlarla kullanılacaktır. Gizliliğinizin ihlal edilmemesi için gereken tüm tedbirler alınmakla birlikte, üçüncü taraflarca yapılabilecek veri ihlallerinden site sorumlu değildir.</li><br/>
+                                <li><strong>6. Değişiklikler:</strong> Bu kullanım şartları zaman zaman güncellenebilir. Güncellenmiş şartlar, site üzerinde yayımlandığı tarihten itibaren geçerli olacaktır. Kullanıcılar, siteyi kullanmaya devam ederek güncel şartları kabul etmiş sayılır.</li><br/>
+                                <li><strong>7. Hizmetin Durdurulması:</strong> Site yönetimi, herhangi bir zamanda üyelik iptali veya hizmetlerin geçici veya kalıcı olarak durdurulmasına karar verebilir.</li>
+                            </ul>
+                        </div>`
+        ,
+                    icon: "question",
+                    confirmButtonText: `
+                    <i class="fa fa-thumbs-up"></i> Anladım!
+                    `
+                });
+            };
+    </script>
+
+</body>
+
+</html>

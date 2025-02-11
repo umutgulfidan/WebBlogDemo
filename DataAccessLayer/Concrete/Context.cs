@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Concrete
 {
-    public class Context:DbContext
+    public class Context : IdentityDbContext<AppUser,AppRole,int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +40,9 @@ namespace DataAccessLayer.Concrete
             // Triggers
             modelBuilder.Entity<Blog>().ToTable(tb => tb.UseSqlOutputClause(false));
             modelBuilder.Entity<Comment>().ToTable(tb => tb.UseSqlOutputClause(false));
+
+
+
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,5 +1,6 @@
 using System.Globalization;
 using BusinessLayer.ValidationRules;
+using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -10,11 +11,20 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>(x =>
+{
+    x.Password.RequireUppercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+})
+
+    .AddEntityFrameworkStores<Context>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 // To Login
-builder.Services.AddMvc(config=>
+builder.Services.AddMvc(config =>
 {
     var policy = new AuthorizationPolicyBuilder()
     .RequireAuthenticatedUser().Build();
@@ -23,7 +33,7 @@ builder.Services.AddMvc(config=>
 
 });
 builder.Services.AddSession();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x=> { x.LoginPath = "/Login/Index"; });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x => { x.LoginPath = "/Login/Index"; });
 //
 
 builder.Services.AddScoped<IValidator<Writer>, WriterValidator>();
@@ -41,7 +51,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1","?code={0}");
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseRouting();

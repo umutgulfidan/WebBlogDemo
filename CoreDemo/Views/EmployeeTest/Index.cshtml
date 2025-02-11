@@ -11,15 +11,15 @@
     <tr>
         <th>#</th>
         <th>Adı Soyadı</th>
-        <th>Sil</th>
-        <th>Düzenle</th>
+        <th class="text-center">Sil</th>
+        <th class="text-center">Düzenle</th>
     </tr>
     @foreach(var item in Model){
         <tr>
             <td>@item.Id</td>
             <td>@item.Name</td>
-            <td><a href="/EmployeeTest/DeleteEmployee/@item.Id" class="btn btn-outline-danger">Sil</a></td>
-            <td><a href="/EmployeeTest/EditEmployee/@item.Id" class="btn btn-outline-success">Düzenle</a></td>
+            <td class="text-center"><a href="/EmployeeTest/DeleteEmployee/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+            <td class="text-center"><a href="/EmployeeTest/EditEmployee/@item.Id" class="btn btn-outline-success">Düzenle</a></td>
         </tr>
     }
 </table>
