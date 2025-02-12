@@ -2,6 +2,7 @@
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.ViewComponents.Writer
@@ -9,11 +10,19 @@ namespace CoreDemo.ViewComponents.Writer
     public class WriterNavbar : ViewComponent
     {
         WriterManager _writerManager = new WriterManager(new EfWriterRepository());
-        public IViewComponentResult Invoke()
+        UserManager<AppUser> _userManager;
+
+        public WriterNavbar(UserManager<AppUser> userManager)
         {
-            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            EntityLayer.Concrete.Writer writerValues = _writerManager.GetById(id);
-            return View(writerValues);
+            _userManager = userManager;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var userMail = user.Email;
+            var writer = _writerManager.GetWriterByMail(userMail);
+            return View(writer);
         }
     }
 }

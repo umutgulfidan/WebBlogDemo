@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
@@ -8,10 +10,18 @@ namespace CoreDemo.Controllers
     public class MessageController : Controller
     {
         MessageManager _messageManager = new MessageManager(new EfMessageRepository());
-        public IActionResult InBox()
+        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
+        UserManager<AppUser> _userManager;
+
+        public MessageController(UserManager<AppUser> userManager)
         {
-            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            var values = _messageManager.GetListByReceiver(Convert.ToInt32(id));
+            _userManager = userManager;
+        }
+        public async Task<IActionResult> InBox()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var writerId = _writerManager.GetWriterByMail(user.Email).WriterID;
+            var values = _messageManager.GetListByReceiver(writerId);
             return View(values);
         }
         [HttpGet]

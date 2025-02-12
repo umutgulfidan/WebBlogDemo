@@ -6,6 +6,7 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -15,6 +16,14 @@ namespace CoreDemo.Controllers
     public class BlogController : Controller
     {
         BlogManager _blogManager = new BlogManager(new EfBlogRepository());
+        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
+        UserManager<AppUser> _userManager;
+
+        public BlogController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
         public IActionResult Index()
         {
             var values = _blogManager.GetBlogListWithCategory();
@@ -32,10 +41,12 @@ namespace CoreDemo.Controllers
             return View(values);
         }
 
-        public IActionResult BlogListByWriter()
+        public async Task<IActionResult> BlogListByWriter()
         {
-            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            var values = _blogManager.GetListWithCategoryByWriter(id);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var userMail = user.Email;
+            var writerId = _writerManager.GetWriterByMail(userMail).WriterID;
+            var values = _blogManager.GetListWithCategoryByWriter(writerId);
             return View(values);
         }
         [HttpGet]
@@ -62,11 +73,10 @@ namespace CoreDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlogAdd(AddBlogWithImage blogWithImage)
+        public async Task<IActionResult> BlogAdd(AddBlogWithImage blogWithImage)
         {
-
-            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var writerId = _writerManager.GetWriterByMail(user.Email).WriterID;
 
             Blog blog = new Blog()
             {
@@ -77,7 +87,7 @@ namespace CoreDemo.Controllers
                 BlogContent = blogWithImage.BlogContent,
                 BlogTitle = blogWithImage.BlogTitle,
                 CategoryID = blogWithImage.CategoryID,
-                WriterID = id
+                WriterID = writerId
             };
 
             BlogValidator blogValidator = new BlogValidator();

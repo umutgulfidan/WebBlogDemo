@@ -6,6 +6,7 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
@@ -13,6 +14,12 @@ namespace CoreDemo.Controllers
     public class WriterController : Controller
     {
         WriterManager _writerManager = new WriterManager(new EfWriterRepository());
+        UserManager<AppUser> _userManager;
+
+        public WriterController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public PartialViewResult WriterFooterPartial()
         {
@@ -20,10 +27,10 @@ namespace CoreDemo.Controllers
         }
 
         [HttpGet]
-        public IActionResult WriterEditProfile()
+        public async Task<IActionResult> WriterEditProfile()
         {
-            var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            var writerValues = _writerManager.GetById(id);
+            var user = await _userManager.GetUserAsync(User);
+            var writerValues = _writerManager.GetWriterByMail(user.Email);
             return View(writerValues);
         }
         [HttpPost]
