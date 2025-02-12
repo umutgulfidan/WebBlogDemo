@@ -1,31 +1,74 @@
 ﻿@model int
+
 <div class="comment-top">
     <h4>Yorum Yap</h4>
     <div class="comment-bottom">
         <form id="commentForm" method="post">
+            <div class="bg-white p-2 rounded-lg text-center">
+
+                <div class="flex gap-2 justify-center items-center">
+                    <span class="text-lg font-semibold">Puanınızı Seçin: &nbsp; &nbsp; &nbsp; &nbsp;</span>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let ratingContainer = document.querySelector("#rating-container");
+                            let hiddenInput = document.querySelector("#BlogScore"); // Gizli input
+
+                            for (let i = 1; i <= 10; i++) {
+                                let btn = document.createElement("button");
+                                btn.textContent = i;
+                                btn.className = "rating-btn px-3 py-2 rounded-md border bg-gray-200 transition";
+                                btn.dataset.value = i;
+                                ratingContainer.appendChild(btn);
+                            }
+
+                            ratingContainer.addEventListener("click", function (e) {
+                                if (e.target.classList.contains("rating-btn")) {
+                                    document.querySelectorAll(".rating-btn").forEach(btn => {
+                                        btn.style.backgroundColor = "#e5e7eb"; // Tailwind'in gray-200 rengi
+                                        btn.style.color = "black";
+                                    });
+                                    e.target.style.backgroundColor = "#01cd74"; // Yeşil renk
+                                    e.target.style.color = "white"; // Yazı rengi beyaz
+
+                                    hiddenInput.value = e.target.dataset.value;
+
+                                }
+                            });
+                        });
+                    </script>
+
+                    <div id="rating-container" class="flex gap-2"></div>
+                </div>
+            </div>
+
+            <input type="hidden" id="BlogScore" name="BlogScore">
+
             <input style="color:black;" class="form-control" type="text" id="CommentUserName" name="CommentUserName" placeholder="Adınız Soyadınız" required="">
-            <input style ="color:black;" class="form-control" type="text" id="CommentTitle" name="CommentTitle" placeholder="Konu Başlığı" required="">
+            <input style="color:black;" class="form-control" type="text" id="CommentTitle" name="CommentTitle" placeholder="Konu Başlığı" required="">
             <textarea style="color:black;" id="CommentContent" class="form-control" name="CommentContent" placeholder="Mesajınız" required=""></textarea>
             <button type="submit" class="btn btn-primary submit">Submit</button>
         </form>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
             $(document).ready(function() {
                 $('#commentForm').on('submit', function(e) {
+
                     e.preventDefault(); // Sayfa yenilenmesini engelle
-                            console.log('@Url.Action("CommentAdd", "CommentController")');
 
-                       var blogId = @Model;
+                    var blogId = @Model;
+                    var rating = $('#BlogScore').val(); // Seçilen puanı al
 
-                       var formData = {
-                           CommentUserName: $('#CommentUserName').val(),
-                           CommentTitle: $('#CommentTitle').val(),
-                           CommentContent: $('#CommentContent').val(),
-                           BlogID: blogId,  // Burada blogId'yi kullanıyoruz
-                           CommentStatus: true,
-                           CommentDate: new Date().toISOString()  // Tarih formatı düzeltildi
-                       };
+                    var formData = {
+                        CommentUserName: $('#CommentUserName').val(),
+                        CommentTitle: $('#CommentTitle').val(),
+                        CommentContent: $('#CommentContent').val(),
+                        BlogID: blogId,
+                        BlogScore: rating, // Puanı ekledik
+                        CommentStatus: true,
+                        CommentDate: new Date().toISOString()
+                    };
 
                     $.ajax({
                         url: '/Comment/CommentAdd',
