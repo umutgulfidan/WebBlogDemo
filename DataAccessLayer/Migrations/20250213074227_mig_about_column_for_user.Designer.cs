@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250213074227_mig_about_column_for_user")]
+    partial class mig_about_column_for_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,10 +190,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -469,6 +468,45 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.Writer", b =>
+                {
+                    b.Property<int>("WriterID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WriterID"));
+
+                    b.Property<string>("WriterAbout")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WriterImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WriterMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WriterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WriterPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WriterStatus")
+                        .HasColumnType("bit");
+
+                    b.HasKey("WriterID");
+
+                    b.HasIndex("WriterMail")
+                        .IsUnique();
+
+                    b.ToTable("Writers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -580,7 +618,7 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Concrete.AppUser", "Writer")
+                    b.HasOne("EntityLayer.Concrete.Writer", "Writer")
                         .WithMany()
                         .HasForeignKey("WriterID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -615,13 +653,13 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.Message", b =>
                 {
-                    b.HasOne("EntityLayer.Concrete.AppUser", "Receiver")
+                    b.HasOne("EntityLayer.Concrete.Writer", "Receiver")
                         .WithMany("WriterReceiver")
                         .HasForeignKey("ReceiverID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Concrete.AppUser", "Sender")
+                    b.HasOne("EntityLayer.Concrete.Writer", "Sender")
                         .WithMany("WriterSender")
                         .HasForeignKey("SenderID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -683,13 +721,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EntityLayer.Concrete.AppUser", b =>
-                {
-                    b.Navigation("WriterReceiver");
-
-                    b.Navigation("WriterSender");
-                });
-
             modelBuilder.Entity("EntityLayer.Concrete.Blog", b =>
                 {
                     b.Navigation("Comments");
@@ -698,6 +729,13 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Concrete.Category", b =>
                 {
                     b.Navigation("Blogs");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Writer", b =>
+                {
+                    b.Navigation("WriterReceiver");
+
+                    b.Navigation("WriterSender");
                 });
 #pragma warning restore 612, 618
         }

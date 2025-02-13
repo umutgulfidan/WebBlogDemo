@@ -19,7 +19,7 @@
         <tr>
             <td><b>@item.MessageID</b></td>
             <td>@item.Subject</td>
-            <td>@item.Sender.WriterName (@item.Sender.WriterMail)</td>
+            <td>@item.Sender.NameSurname (@item.Sender.Email)</td>
             <td>@TimeHelper.CalcDifference(item.MessageDate)</td>
             <td><a href="/Message/MessageDetails/@item.MessageID" class="btn-sm btn-warning">Mesajı Aç</a></td>
         </tr>

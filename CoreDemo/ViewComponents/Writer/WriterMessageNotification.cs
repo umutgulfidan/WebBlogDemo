@@ -10,7 +10,6 @@ namespace CoreDemo.ViewComponents.Writer
     public class WriterMessageNotification : ViewComponent
     {
         MessageManager _messageManager = new MessageManager(new EfMessageRepository());
-        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
         UserManager<AppUser> _userManager;
 
         public WriterMessageNotification(UserManager<AppUser> userManager)
@@ -22,8 +21,7 @@ namespace CoreDemo.ViewComponents.Writer
         {
             //var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var writerId = _writerManager.GetWriterByMail(user.Email).WriterID;
-            var values = _messageManager.GetListByReceiver(writerId);
+            var values = _messageManager.GetListByReceiver(user.Id);
             return View(values);
         }
     }

@@ -7,7 +7,8 @@ using EntityLayer.Concrete;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IWriterDal : IGenericDal<Writer>
+    public interface IUserDal : IGenericDal<AppUser>
     {
+
     }
 }

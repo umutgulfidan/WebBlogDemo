@@ -22,7 +22,7 @@ namespace DataAccessLayer.Concrete
         {
             //Uniq Keys
             modelBuilder.Entity<NewsLetter>().HasIndex(x=>x.Mail).IsUnique();
-            modelBuilder.Entity<Writer>().HasIndex(x => x.WriterMail).IsUnique();
+            modelBuilder.Entity<AppUser>().HasIndex(x => x.Email).IsUnique();
 
             //
             modelBuilder.Entity<Message>()
@@ -52,7 +52,6 @@ namespace DataAccessLayer.Concrete
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Writer> Writers { get; set; }
         public DbSet<NewsLetter> NewsLetters { get; set; }
         public DbSet<BlogRating> BlogsRatings { get; set; }
         public DbSet<Notification> Notifications { get; set; }

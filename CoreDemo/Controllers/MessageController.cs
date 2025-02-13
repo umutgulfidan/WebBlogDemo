@@ -10,7 +10,6 @@ namespace CoreDemo.Controllers
     public class MessageController : Controller
     {
         MessageManager _messageManager = new MessageManager(new EfMessageRepository());
-        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
         UserManager<AppUser> _userManager;
 
         public MessageController(UserManager<AppUser> userManager)
@@ -20,8 +19,7 @@ namespace CoreDemo.Controllers
         public async Task<IActionResult> InBox()
         {
             var user = await _userManager.GetUserAsync(User);
-            var writerId = _writerManager.GetWriterByMail(user.Email).WriterID;
-            var values = _messageManager.GetListByReceiver(writerId);
+            var values = _messageManager.GetListByReceiver(user.Id);
             return View(values);
         }
         [HttpGet]

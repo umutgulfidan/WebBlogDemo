@@ -7,8 +7,8 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IWriterService : IGenericService<Writer>
+    public interface IUserService : IGenericService<AppUser>
     {
-        Writer GetWriterByMail(string mail);
+
     }
 }

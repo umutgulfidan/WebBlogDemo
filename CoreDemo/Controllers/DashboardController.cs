@@ -20,11 +20,9 @@ namespace CoreDemo.Controllers
             Context c = new Context();
             //var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
             var user = await _userManager.GetUserAsync(User);
-            var userMail = user.Email;
-            var writerId = c.Writers.Where(x=> x.WriterMail == userMail).Select(y=>y.WriterID).FirstOrDefault();
 
             ViewBag.v1 = c.Blogs.Count().ToString();
-            ViewBag.v2 = c.Blogs.Where(x=> x.WriterID==writerId).Count();
+            ViewBag.v2 = c.Blogs.Where(x=> x.WriterID==user.Id).Count();
             ViewBag.v3 = c.Categories.Count();
             return View();
         }

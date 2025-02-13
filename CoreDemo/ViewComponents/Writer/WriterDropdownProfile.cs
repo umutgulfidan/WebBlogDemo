@@ -9,7 +9,6 @@ namespace CoreDemo.ViewComponents.Writer
 {
     public class WriterDropdownProfile : ViewComponent  
     {
-        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
         UserManager<AppUser> _userManager;
 
         public WriterDropdownProfile(UserManager<AppUser> userManager)
@@ -22,9 +21,7 @@ namespace CoreDemo.ViewComponents.Writer
             //var id = Convert.ToInt32(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
             //var writer = _writerManager.GetById(id);
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var userMail = user.Email;
-            var writer = _writerManager.GetWriterByMail(userMail);
-            return View(writer);
+            return View(user);
         }
     }
 }

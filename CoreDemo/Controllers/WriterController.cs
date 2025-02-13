@@ -13,8 +13,8 @@ namespace CoreDemo.Controllers
 {
     public class WriterController : Controller
     {
-        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
-        UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
+        UserManager userManager = new UserManager(new EfUserRepository());
 
         public WriterController(UserManager<AppUser> userManager)
         {
@@ -29,24 +29,39 @@ namespace CoreDemo.Controllers
         [HttpGet]
         public async Task<IActionResult> WriterEditProfile()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var writerValues = _writerManager.GetWriterByMail(user.Email);
-            return View(writerValues);
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserUpdateViewModel model = new UserUpdateViewModel()
+            {
+                NameSurname = values.NameSurname,
+                Mail = values.Email,
+                UserName = values.UserName,
+                About = values.About
+            };
+            return View(model);
         }
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer writer,IFormFile file)
+        public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model,IFormFile file)
         {
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            values.Email = model.Mail;
+            values.UserName = model.UserName;
+            values.About = model.About;
+            values.NameSurname = model.NameSurname;
+            values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.Password);
+
             bool isImageChanged = false;
             if(file != null)
             {
-                writer.WriterImage = FileHelper.AddWriterImage(file);
+                values.ImageUrl = FileHelper.AddWriterImage(file);
                 isImageChanged = true;
             }
-            WriterValidator writerValidator = new WriterValidator();
-            ValidationResult results = writerValidator.Validate(writer);
+
+            UserValidator validator = new UserValidator();
+            ValidationResult results = validator.Validate(values);
+
             if (results.IsValid)
             {
-                _writerManager.TUpdate(writer);
+                var result = await _userManager.UpdateAsync(values);
                 return RedirectToAction("Index", "Dashboard");
             }
             else
@@ -54,7 +69,7 @@ namespace CoreDemo.Controllers
 
                 if (isImageChanged)
                 {
-                    FileHelper.DeleteWriterImage(writer.WriterImage);
+                    FileHelper.DeleteWriterImage(values.ImageUrl);
                 }
 
                 ModelState.Clear();
@@ -63,29 +78,9 @@ namespace CoreDemo.Controllers
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
             }
-            return View(writer);
+
+            return View(model);
         }
-        [HttpGet]
-        public IActionResult WriterAdd()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult WriterAdd(WriterWithImage writerWithImage)
-        {
-            Writer w = new Writer();
-            if(writerWithImage.WriterImage != null)
-            {
-                var newImageName = FileHelper.AddWriterImage(writerWithImage.WriterImage);
-                w.WriterImage = newImageName;
-            }
-            w.WriterName = writerWithImage.WriterName;
-            w.WriterStatus = writerWithImage.WriterStatus;
-            w.WriterPassword = writerWithImage.WriterPassword;
-            w.WriterMail = writerWithImage.WriterMail;
-            w.WriterAbout = writerWithImage.WriterAbout;
-            _writerManager.TAdd(w);
-            return RedirectToAction("Index","Dashboard");
-        }
+     
     }
 }

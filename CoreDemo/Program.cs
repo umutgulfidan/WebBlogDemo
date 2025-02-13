@@ -34,10 +34,12 @@ builder.Services.AddMvc(config =>
 });
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x => { x.LoginPath = "/Login/Index"; });
-//
-
-builder.Services.AddScoped<IValidator<Writer>, WriterValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<WriterValidator>();
+builder.Services.ConfigureApplicationCookie(options => {
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.LoginPath = "/Login/Index/";
+    options.SlidingExpiration = true;
+});
 
 
 

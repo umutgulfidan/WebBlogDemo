@@ -16,7 +16,6 @@ namespace CoreDemo.Controllers
     public class BlogController : Controller
     {
         BlogManager _blogManager = new BlogManager(new EfBlogRepository());
-        WriterManager _writerManager = new WriterManager(new EfWriterRepository());
         UserManager<AppUser> _userManager;
 
         public BlogController(UserManager<AppUser> userManager)
@@ -44,9 +43,7 @@ namespace CoreDemo.Controllers
         public async Task<IActionResult> BlogListByWriter()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var userMail = user.Email;
-            var writerId = _writerManager.GetWriterByMail(userMail).WriterID;
-            var values = _blogManager.GetListWithCategoryByWriter(writerId);
+            var values = _blogManager.GetListWithCategoryByWriter(user.Id);
             return View(values);
         }
         [HttpGet]
@@ -76,7 +73,6 @@ namespace CoreDemo.Controllers
         public async Task<IActionResult> BlogAdd(AddBlogWithImage blogWithImage)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var writerId = _writerManager.GetWriterByMail(user.Email).WriterID;
 
             Blog blog = new Blog()
             {
@@ -87,7 +83,7 @@ namespace CoreDemo.Controllers
                 BlogContent = blogWithImage.BlogContent,
                 BlogTitle = blogWithImage.BlogTitle,
                 CategoryID = blogWithImage.CategoryID,
-                WriterID = writerId
+                WriterID = user.Id
             };
 
             BlogValidator blogValidator = new BlogValidator();

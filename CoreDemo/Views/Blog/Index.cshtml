@@ -42,7 +42,22 @@
 								<p class="card-text mb-3">
 									@{
 										int blogContentSize = 150;
-										string blogContent = item.BlogContent.Length > blogContentSize ? item.BlogContent.Substring(0, item.BlogContent.Substring(0,blogContentSize).LastIndexOf(" ")) + "..." : item.BlogContent;
+										string blogContent = item.BlogContent;
+
+										if (blogContent.Length > blogContentSize)
+										{
+											string trimmedContent = blogContent.Substring(0, blogContentSize);
+											int lastSpaceIndex = trimmedContent.LastIndexOf(" ");
+
+											if (lastSpaceIndex > 0) // Boşluk varsa, en son boşlukta kes
+											{
+												blogContent = trimmedContent.Substring(0, lastSpaceIndex) + "...";
+											}
+											else // Boşluk yoksa direkt belirtilen uzunlukta kes
+											{
+												blogContent = trimmedContent + "...";
+											}
+										}
 									}
 									@blogContent
 									</p>

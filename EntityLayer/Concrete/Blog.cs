@@ -28,6 +28,6 @@ namespace EntityLayer.Concrete
 
         // Yazar
         public int WriterID { get; set; }
-        public Writer Writer { get; set; }
+        public AppUser Writer { get; set; }
     }
 }

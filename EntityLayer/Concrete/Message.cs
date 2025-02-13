@@ -21,9 +21,9 @@ namespace EntityLayer.Concrete
         public bool MessageStatus { get; set; }
 
         //[ForeignKey("SenderID")]
-        public Writer Sender { get; set; }
+        public AppUser Sender { get; set; }
         //[ForeignKey("ReceiverID")]
-        public Writer Receiver { get; set; }
+        public AppUser Receiver { get; set; }
 
     }
 }

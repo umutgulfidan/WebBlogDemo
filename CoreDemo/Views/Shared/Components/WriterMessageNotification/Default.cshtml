@@ -7,10 +7,19 @@
 	@foreach(var item in Model){
 		<a class="dropdown-item preview-item" href="/Message/MessageDetails/@item.MessageID">
 			<div class="preview-thumbnail">
-				<img src="~/WriterImagesFolder/@item.Sender.WriterImage" alt="image" class="profile-pic">
+				@{
+					if (item.Sender.ImageUrl == null)
+					{
+						<img src="~/WriterImagesFolder/DefaultWriter.png" class="profile-pic" alt="image">
+					}
+					else
+					{
+						<img src="~/WriterImagesFolder/@item.Sender.ImageUrl" class="profile-pic" alt="image">
+					}
+				}
 			</div>
 			<div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-				<h6 class="preview-subject ellipsis mb-1 font-weight-normal">@item.Sender.WriterName sana bir mesaj gönderdi.</h6>
+				<h6 class="preview-subject ellipsis mb-1 font-weight-normal">@item.Sender.NameSurname sana bir mesaj gönderdi.</h6>
 					<p class="text-gray mb-0">@TimeHelper.CalcDifference(item.MessageDate)</p>
 
 			</div>
