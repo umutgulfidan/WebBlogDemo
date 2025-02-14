@@ -10,5 +10,6 @@ namespace DataAccessLayer.Abstract
     public interface IMessageDal : IGenericDal<Message>
     {
         List<Message> GetMessagesByReceiver(int receiverId);
+        List<Message> GetMessagesBySender(int senderId);
     }
 }

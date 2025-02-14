@@ -1,0 +1,77 @@
+﻿@model Message
+
+@{
+    ViewData["Title"] = "SendMessage";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Mesaj Gönder</h4>
+
+            <form class="forms-sample" method="post" asp-action="SendMessage">
+
+                <div class="form-group">
+                    <label for="receiverSearch">Alıcı</label>
+                    <input id="receiverSearch" type="text" class="form-control" placeholder="Alıcı adı veya email girin">
+                    <input type="hidden" asp-for="ReceiverID" id="receiverID">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Konu</label>
+                    <input type="text" class="form-control" asp-for="Subject">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Mesajınız</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="15" asp-for="MessageDetails"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary mr-2">Mesajı Gönder</button>
+                <button asp-action="Index" asp-controller="Dashboard" class="btn btn-light">İptal Et</button>
+
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- jQuery ve jQuery UI'yi sayfanın altına ekliyoruz -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script>
+        $(document).ready(function () {
+            $("#receiverSearch").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Message/GetUsers", // Backend URL
+                        type: "GET",
+                        dataType: "json",
+                        data: { searchTerm: request.term }, // searchTerm parametresi
+                        success: function (data) {
+                            console.log(data); // Gelen veriyi konsola yazdırarak kontrol et
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.label, // label alıyoruz
+                                    value: item.value  // value alıyoruz
+                                };
+                            }));
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error: " + status + " - " + error); // Hata mesajı
+                        }
+                    });
+                },
+                minLength: 2, // En az 2 karakter girildiğinde arama başlatılır
+                select: function (event, ui) {
+                    $("#receiverSearch").val(ui.item.label); // Seçilen öğeyi input'a yaz
+                    $("#receiverID").val(ui.item.value); // Receiver ID'yi gizli alana yaz
+                    return false; // Otomatik olarak formun submit edilmesini engelle
+                }
+            });
+        });
+    </script>
+
+}

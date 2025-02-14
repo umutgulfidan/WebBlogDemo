@@ -33,6 +33,11 @@ namespace BusinessLayer.Concrete
             return _messageDal.GetMessagesByReceiver(receiverId);
         }
 
+        public List<Message> GetListBySender(int senderId)
+        {
+            return _messageDal.GetMessagesBySender(senderId);
+        }
+
         public void TAdd(Message t)
         {
             _messageDal.Insert(t);

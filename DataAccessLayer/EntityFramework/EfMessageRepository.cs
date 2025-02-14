@@ -23,5 +23,13 @@ namespace DataAccessLayer.EntityFramework
               .ToList();
             }
         }
+
+        public List<Message> GetMessagesBySender(int senderId)
+        {
+            using(var context = new Context())
+            {
+                return  context.Messages.Where(x=>x.SenderID == senderId).Include(x=> x.Receiver).ToList();
+            }
+        }
     }
 }

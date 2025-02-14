@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Message>
-@using CoreDemo.Models
 @{
-    ViewData["Title"] = "InBox";
+    ViewData["Title"] = "SendBox";
     Layout = "~/Views/Shared/WriterLayout.cshtml";
 }
 
-<h1>Gelen Kutusu</h1>
+
+<h1>Giden Kutusu</h1>
 <table class="table table-bordered">
     <tr>
         <th>#</th>
         <th>Konu</th>
-        <th>Gönderen</th>
+        <th>Alıcı</th>
         <th>Tarih</th>
         <th>Mesajı Aç</th>
     </tr>
@@ -19,11 +19,11 @@
         <tr>
             <td><b>@item.MessageID</b></td>
             <td>@item.Subject</td>
-            <td>@item.Sender.NameSurname (@item.Sender.Email)</td>
+            <td>@item.Receiver.NameSurname (@item.Receiver.Email)</td>
             <td>@TimeHelper.CalcDifference(item.MessageDate)</td>
             <td><a href="/Message/MessageDetails/@item.MessageID" class="btn-sm btn-warning">Mesajı Aç</a></td>
         </tr>
     }
 </table>
 <a href="/Message/SendMessage" class="btn btn-primary">Mesaj Gönder</a>
-<a href="/Message/SendBox" class="btn btn-info">Giden Kutusu</a>
+<a href="/Message/InBox" class="btn btn-info">Gelen Kutusu</a>

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using CoreDemo.Models;
@@ -13,12 +14,13 @@ namespace CoreDemo.Controllers
 {
     public class WriterController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        UserManager userManager = new UserManager(new EfUserRepository());
+        private readonly UserManager<AppUser> _identityUserManager;
+        private readonly IUserService _userService;
 
-        public WriterController(UserManager<AppUser> userManager)
+        public WriterController(UserManager<AppUser> identityUserManager, IUserService userService)
         {
-            _userManager = userManager;
+            _identityUserManager = identityUserManager;
+            _userService = userService;
         }
 
         public PartialViewResult WriterFooterPartial()
@@ -29,7 +31,7 @@ namespace CoreDemo.Controllers
         [HttpGet]
         public async Task<IActionResult> WriterEditProfile()
         {
-            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            var values = await _identityUserManager.FindByNameAsync(User.Identity.Name);
             UserUpdateViewModel model = new UserUpdateViewModel()
             {
                 NameSurname = values.NameSurname,
@@ -42,12 +44,12 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model,IFormFile file)
         {
-            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            var values = await _identityUserManager.FindByNameAsync(User.Identity.Name);
             values.Email = model.Mail;
             values.UserName = model.UserName;
             values.About = model.About;
             values.NameSurname = model.NameSurname;
-            values.PasswordHash = _userManager.PasswordHasher.HashPassword(values,model.Password);
+            values.PasswordHash = _identityUserManager.PasswordHasher.HashPassword(values,model.Password);
 
             bool isImageChanged = false;
             if(file != null)
@@ -61,7 +63,7 @@ namespace CoreDemo.Controllers
 
             if (results.IsValid)
             {
-                var result = await _userManager.UpdateAsync(values);
+                var result = await _identityUserManager.UpdateAsync(values);
                 return RedirectToAction("Index", "Dashboard");
             }
             else

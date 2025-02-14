@@ -1,6 +1,10 @@
 using System.Globalization;
+using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -40,6 +44,11 @@ builder.Services.ConfigureApplicationCookie(options => {
     options.LoginPath = "/Login/Index/";
     options.SlidingExpiration = true;
 });
+
+
+// DI
+builder.Services.AddScoped<IUserService, UserManager>(); // Business katmanýndaki UserManager
+builder.Services.AddScoped<IUserDal,EfUserRepository>(); // Eðer baðýmlýlýðý varsa ekleyelim
 
 
 

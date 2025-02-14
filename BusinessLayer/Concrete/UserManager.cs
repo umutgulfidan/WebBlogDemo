@@ -6,18 +6,27 @@ using System.Threading.Tasks;
 using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLayer.Concrete
 {
     public class UserManager : IUserService
     {
-        IUserDal _userDal;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserDal _userDal;
 
-        public UserManager(IUserDal userDal)
+        public UserManager(UserManager<AppUser> userManager,IUserDal userDal)
         {
+            _userManager = userManager;
             _userDal = userDal;
         }
 
+        public List<AppUser> SearchUser(string searchTerm)
+        {
+            return _userManager.Users
+                .Where(u => u.Email.Contains(searchTerm) || u.UserName.Contains(searchTerm))
+                .ToList();
+        }
         public AppUser GetById(int id)
         {
             return _userDal.GetById(id);

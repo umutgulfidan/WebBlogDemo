@@ -10,5 +10,7 @@ namespace BusinessLayer.Abstract
     public interface IMessageService : IGenericService<Message>
     {
         List<Message> GetListByReceiver(int receiverId);
+        List<Message> GetListBySender(int senderId);
+
     }
 }

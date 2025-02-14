@@ -9,6 +9,6 @@ namespace BusinessLayer.Abstract
 {
     public interface IUserService : IGenericService<AppUser>
     {
-
+        List<AppUser> SearchUser(string searchTerm);
     }
 }
