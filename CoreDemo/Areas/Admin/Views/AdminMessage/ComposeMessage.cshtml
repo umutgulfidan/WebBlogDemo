@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Message
+
+@{
 	ViewData["Title"] = "ComposeMessage";
 	Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -44,31 +46,31 @@
 			</h2>
 		</div>
 		<div class="mail-box">
-			<form method="get">
+			<form method="post">
 
 				<div class="mail-body">
 
-
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">Alıcı:</label>
-
-						<div class="col-sm-10"><input type="text" class="form-control" value="yazar@mail.com"></div>
+						<label class="col-sm-2 col-form-label" for="receiverSearch">Alıcı</label>
+						<input id="receiverSearch" type="text" class="form-control col-sm-10" placeholder="Alıcı adı veya email girin">
+						<input type="hidden" asp-for="ReceiverID" id="receiverID">
 					</div>
+
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">Konu:</label>
-
-						<div class="col-sm-10"><input type="text" class="form-control" value=""></div>
+						<input type="text" class="form-control col-sm-10" style="width:100%;" asp-for="Subject" placeholder="Konu">
 					</div>
 
 
 				</div>
 
 				<div class="p-4 mail-text h-200">
-					<textarea class="form-control" style="width:100%" rows="25"></textarea>
+					<textarea class="form-control" style="width:100%" rows="15" asp-for="MessageDetails" placeholder="Mesajınız..."></textarea>
 					<div class="clearfix"></div>
 				</div>
+
 				<div class="mail-body text-right tooltip-demo">
-					<a href="mailbox.html" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Gönder"><i class="fa fa-reply"></i> Gönder</a>
+					<button type="submit" href="mailbox.html" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Gönder"><i class="fa fa-reply"></i> Gönder</button>>
 					<a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Vazgeç"><i class="fa fa-times"></i> Vazgeç</a>
 					<a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Taslak olarak kaydet."><i class="fa fa-pencil"></i> Taslak</a>
 				</div>
@@ -79,3 +81,46 @@
 		</div>
 	</div>
 </div>
+
+@section Scripts {
+	<!-- Önce jQuery yüklenmeli -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Sonra jQuery UI yüklenmeli -->
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+	<!-- jQuery UI için CSS -->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+	<script>
+		var jq = jQuery.noConflict();
+		jq(document).ready(function () {
+			jq("#receiverSearch").autocomplete({
+				source: function (request, response) {
+					jq.ajax({
+						url: "/Message/GetUsers",
+						type: "GET",
+						dataType: "json",
+						data: { searchTerm: request.term },
+						success: function (data) {
+							response(jq.map(data, function (item) {
+								return {
+									label: item.label,
+									value: item.value
+								};
+							}));
+						}
+					});
+				},
+				minLength: 2,
+				select: function (event, ui) {
+					jq("#receiverSearch").val(ui.item.label);
+					jq("#receiverID").val(ui.item.value);
+					return false;
+				}
+			});
+		});
+	</script>
+
+
+}

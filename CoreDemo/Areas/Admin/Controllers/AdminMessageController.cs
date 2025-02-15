@@ -37,5 +37,15 @@ namespace CoreDemo.Areas.Admin.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ComposeMessage(Message message)
+        {
+            message.SenderID = Convert.ToInt32(_userManagerIdentity.GetUserId(User));
+            message.MessageStatus = true;
+            message.MessageDate = DateTime.Now;
+           _messageManager.TAdd(message);
+            return RedirectToAction("Sendbox");
+        }
     }
 }
