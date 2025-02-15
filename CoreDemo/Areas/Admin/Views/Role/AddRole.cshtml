@@ -1,0 +1,18 @@
+﻿@using CoreDemo.Areas.Admin.Models
+@model RoleViewModel
+@{
+    ViewData["Title"] = "AddRole";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>Rol Ekleme Sayfası</h1>
+<form class="form" method="post">
+    <div class="form-group">
+        <label>Rol Başlığı</label>
+        <input class="form-control" type="text" asp-for="Name" />
+    </div>
+    <div asp-validation-summary="ModelOnly">
+    </div>
+    <button class="btn btn-success">Kaydet</button>
+</form>
+
