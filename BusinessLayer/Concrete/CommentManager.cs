@@ -34,6 +34,11 @@ namespace BusinessLayer.Concrete
             return _commentDal.GetListAll();
         }
 
+        public List<Comment> GetListWithBlog()
+        {
+            return _commentDal.GetCommentsWithBlog();
+        }
+
         public void TAdd(Comment t)
         {
             _commentDal.Insert(t);
