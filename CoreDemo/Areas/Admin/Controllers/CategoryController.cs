@@ -9,10 +9,12 @@ using CoreDemo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Reflection.Metadata;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreDemo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         CategoryManager _categoryManager = new CategoryManager(new EfCategoryRepository());

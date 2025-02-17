@@ -41,6 +41,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.ConfigureApplicationCookie(options => {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.AccessDeniedPath = new PathString("/Login/AccessDenied/");
     options.LoginPath = "/Login/Index/";
     options.SlidingExpiration = true;
 });

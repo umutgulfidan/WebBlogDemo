@@ -2,11 +2,13 @@
 using CoreDemo.Areas.Admin.Models;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ExcelController : Controller
     {
         public IActionResult ExportDynamicExcelBlogList()
