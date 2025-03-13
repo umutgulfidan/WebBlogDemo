@@ -1,6 +1,6 @@
 # WebBlogDemo - TR
 
-Bu proje, ASP .NET temellerini öğrenmek amacıyla Murat Yücedağ youtube kanalında yer alan "ASP .NET 5.0 Proje Kampı" isimli oynatma listesi sonucunda oluşturulan Blog Websitesi projesidir.
+Bu proje, ASP .NET temellerini öğrenmek amacıyla Murat Yücedağ youtube kanalında yer alan "ASP .NET 5.0 Proje Kampı" isimli oynatma listesi sonucunda oluşturulan Blog Websitesi projesidir. Projede 3 adet farklı tema kullanılmıştır. HTML/CSS kodları tarafıma ait değildir.
 # Kullanıcı
 ## Blog Sayfası
 ![Blog](https://github.com/user-attachments/assets/83c5a339-cf89-4ba1-b13a-9dbb79100356)
